@@ -1,34 +1,24 @@
 :root {
-  --color-bg: #f4faf9;
+  /* Palet selalu terang & kalem — sengaja TIDAK mengikuti dark mode sistem,
+     supaya kontras teks selalu terjaga di semua perangkat. */
+  color-scheme: light;
+  --color-bg: #f7faf9;
   --color-surface: #ffffff;
   --color-primary: #0f766e;
   --color-primary-dark: #0b5c56;
-  --color-primary-light: #ccfbf1;
+  --color-primary-light: #e6f7f4;
   --color-accent: #f59e0b;
-  --color-text: #0f172a;
-  --color-text-muted: #64748b;
-  --color-border: #e2e8f0;
-  --color-danger: #dc2626;
-  --color-gold: #ca8a04;
-  --color-silver: #64748b;
-  --color-bronze: #b45309;
+  --color-text: #1e293b;
+  --color-text-muted: #6b7a8d;
+  --color-border: #e6ebf0;
+  --color-danger: #c0392b;
+  --color-gold: #b7860b;
+  --color-silver: #7c8794;
+  --color-bronze: #a5622a;
   --radius-md: 12px;
   --radius-lg: 18px;
-  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
   --nav-height: 64px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg: #0b1320;
-    --color-surface: #121c2b;
-    --color-primary: #2dd4bf;
-    --color-primary-dark: #14b8a6;
-    --color-primary-light: #113b37;
-    --color-text: #e2e8f0;
-    --color-text-muted: #94a3b8;
-    --color-border: #1e293b;
-  }
 }
 
 * {
@@ -157,7 +147,9 @@ main.app-content {
 }
 
 .nav-item .nav-icon {
-  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .nav-item.active {
@@ -450,6 +442,7 @@ main.app-content {
 }
 
 .field input {
+  width: 100%;
   border: 1px solid var(--color-border);
   border-radius: 10px;
   padding: 11px 12px;
@@ -466,10 +459,12 @@ main.app-content {
 .field-row {
   display: flex;
   gap: 10px;
+  min-width: 0;
 }
 
 .field-row .field {
   flex: 1;
+  min-width: 0;
 }
 
 .onboarding-screen {

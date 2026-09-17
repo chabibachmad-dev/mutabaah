@@ -45,31 +45,29 @@ function ManageRow({ habit, onSaved, onDeleted }) {
         {habit.is_default && <span className="badge">default</span>}
       </div>
 
-      <div className="field-row">
-        <div className="field">
-          <label>Target</label>
-          <input
-            type="number"
-            min="0.1"
-            step="any"
-            value={targetAmount}
-            onChange={(e) => setTargetAmount(e.target.value)}
-            onBlur={() => {
-              const num = Number(targetAmount)
-              if (num > 0 && num !== habit.target_amount) saveField({ target_amount: num })
-            }}
-            disabled={busy}
-          />
-        </div>
-        <div className="field">
-          <label>Satuan</label>
-          <input
-            value={unit}
-            onChange={(e) => setUnit(e.target.value)}
-            onBlur={() => unit.trim() && unit !== habit.unit && saveField({ unit: unit.trim() })}
-            disabled={busy}
-          />
-        </div>
+      <div className="field">
+        <label>Target</label>
+        <input
+          type="number"
+          min="0.1"
+          step="any"
+          value={targetAmount}
+          onChange={(e) => setTargetAmount(e.target.value)}
+          onBlur={() => {
+            const num = Number(targetAmount)
+            if (num > 0 && num !== habit.target_amount) saveField({ target_amount: num })
+          }}
+          disabled={busy}
+        />
+      </div>
+      <div className="field">
+        <label>Satuan</label>
+        <input
+          value={unit}
+          onChange={(e) => setUnit(e.target.value)}
+          onBlur={() => unit.trim() && unit !== habit.unit && saveField({ unit: unit.trim() })}
+          disabled={busy}
+        />
       </div>
 
       {!confirmDelete ? (
@@ -166,28 +164,26 @@ export default function TargetsPage({ user }) {
               maxLength={60}
             />
           </div>
-          <div className="field-row">
-            <div className="field">
-              <label>Besaran target</label>
-              <input
-                type="number"
-                inputMode="decimal"
-                min="0.1"
-                step="any"
-                placeholder="mis. 5"
-                value={newTarget}
-                onChange={(e) => setNewTarget(e.target.value)}
-              />
-            </div>
-            <div className="field">
-              <label>Satuan</label>
-              <input
-                placeholder="mis. halaman"
-                value={newUnit}
-                onChange={(e) => setNewUnit(e.target.value)}
-                maxLength={20}
-              />
-            </div>
+          <div className="field">
+            <label>Besaran target</label>
+            <input
+              type="number"
+              inputMode="decimal"
+              min="0.1"
+              step="any"
+              placeholder="mis. 5"
+              value={newTarget}
+              onChange={(e) => setNewTarget(e.target.value)}
+            />
+          </div>
+          <div className="field">
+            <label>Satuan</label>
+            <input
+              placeholder="mis. halaman"
+              value={newUnit}
+              onChange={(e) => setNewUnit(e.target.value)}
+              maxLength={20}
+            />
           </div>
           {addError && <div className="error-text">{addError}</div>}
           <button className="btn btn-primary btn-full" type="submit" disabled={adding}>

@@ -3,12 +3,13 @@ import Onboarding from './pages/Onboarding'
 import TodayPage from './pages/TodayPage'
 import LeaderboardPage from './pages/LeaderboardPage'
 import TargetsPage from './pages/TargetsPage'
+import { IconCheck, IconTarget, IconTrophy } from './components/Icons'
 import { clearSavedUser, getSavedUser, saveUser } from './lib/storage'
 
 const TABS = [
-  { key: 'today', label: 'Hari Ini', icon: '✅' },
-  { key: 'leaderboard', label: 'Klasemen', icon: '🏆' },
-  { key: 'targets', label: 'Target', icon: '🎯' },
+  { key: 'today', label: 'Hari Ini', Icon: IconCheck },
+  { key: 'leaderboard', label: 'Klasemen', Icon: IconTrophy },
+  { key: 'targets', label: 'Target', Icon: IconTarget },
 ]
 
 export default function App() {
@@ -59,7 +60,9 @@ export default function App() {
             className={`nav-item${tab === t.key ? ' active' : ''}`}
             onClick={() => setTab(t.key)}
           >
-            <span className="nav-icon">{t.icon}</span>
+            <span className="nav-icon">
+              <t.Icon />
+            </span>
             <span>{t.label}</span>
           </button>
         ))}
