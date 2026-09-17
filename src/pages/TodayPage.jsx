@@ -2,12 +2,13 @@ import { useCallback, useEffect, useState } from 'react'
 import HabitCard from '../components/HabitCard'
 import ProgressRing from '../components/ProgressRing'
 import { getLogsForDate, listHabitTypes, upsertLog } from '../lib/api'
-import { addDays, formatDateLong, isToday, todayKey } from '../lib/dateUtils'
+import { formatDateLong, isToday } from '../lib/dateUtils'
 import { friendlyError } from '../lib/errors'
 import { computeDailyScore } from '../lib/scoring'
+import { useDateNav } from '../lib/useDateNav'
 
 export default function TodayPage({ user, onManageTargets }) {
-  const [dateKey, setDateKey] = useState(todayKey())
+  const { dateKey, goPrevDay, goNextDay } = useDateNav()
   const [habits, setHabits] = useState([])
   const [logs, setLogs] = useState({})
   const [loading, setLoading] = useState(true)
@@ -51,18 +52,14 @@ export default function TodayPage({ user, onManageTargets }) {
   return (
     <>
       <div className="card date-nav">
-        <button onClick={() => setDateKey((d) => addDays(d, -1))} aria-label="Hari sebelumnya">
+        <button onClick={goPrevDay} aria-label="Hari sebelumnya">
           ‹
         </button>
         <div className="date-label">
           {isToday(dateKey) ? 'Hari Ini' : formatDateLong(dateKey)}
           {!isToday(dateKey) && <div style={{ fontWeight: 400, fontSize: 11, color: 'var(--color-text-muted)' }}>{formatDateLong(dateKey)}</div>}
         </div>
-        <button
-          onClick={() => setDateKey((d) => addDays(d, 1))}
-          disabled={isToday(dateKey)}
-          aria-label="Hari berikutnya"
-        >
+        <button onClick={goNextDay} disabled={isToday(dateKey)} aria-label="Hari berikutnya">
           ›
         </button>
       </div>

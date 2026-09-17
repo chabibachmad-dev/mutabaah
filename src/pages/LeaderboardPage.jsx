@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
 import { getLeaderboardData } from '../lib/api'
-import { addDays, formatDateLong, isToday, todayKey } from '../lib/dateUtils'
+import { formatDateLong, isToday } from '../lib/dateUtils'
 import { friendlyError } from '../lib/errors'
 import { computeDailyScore } from '../lib/scoring'
+import { useDateNav } from '../lib/useDateNav'
 
 function rankClass(index) {
   if (index === 0) return 'gold'
@@ -12,7 +13,7 @@ function rankClass(index) {
 }
 
 export default function LeaderboardPage({ user }) {
-  const [dateKey, setDateKey] = useState(todayKey())
+  const { dateKey, goPrevDay, goNextDay } = useDateNav()
   const [rows, setRows] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -57,14 +58,14 @@ export default function LeaderboardPage({ user }) {
   return (
     <>
       <div className="card date-nav">
-        <button onClick={() => setDateKey((d) => addDays(d, -1))} aria-label="Hari sebelumnya">
+        <button onClick={goPrevDay} aria-label="Hari sebelumnya">
           ‹
         </button>
         <div className="date-label">
           {isToday(dateKey) ? 'Klasemen Hari Ini' : 'Klasemen'}
           <div style={{ fontWeight: 400, fontSize: 11, color: 'var(--color-text-muted)' }}>{formatDateLong(dateKey)}</div>
         </div>
-        <button onClick={() => setDateKey((d) => addDays(d, 1))} disabled={isToday(dateKey)} aria-label="Hari berikutnya">
+        <button onClick={goNextDay} disabled={isToday(dateKey)} aria-label="Hari berikutnya">
           ›
         </button>
       </div>
