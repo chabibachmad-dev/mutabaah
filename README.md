@@ -51,9 +51,11 @@ npm run build
 
 Hasilnya ada di folder `dist/` — folder ini yang di-deploy ke hosting.
 
-## 4. Deploy supaya bisa dipakai dari HP (disarankan: Vercel atau Netlify, gratis)
+## 4. Deploy supaya bisa dipakai dari HP
 
-Paling gampang pakai **Vercel**:
+Ada 2 opsi gratis. Keduanya menghasilkan link HTTPS yang bisa di-"Add to Home Screen" dari HP.
+
+### Opsi A — Vercel atau Netlify (paling gampang)
 
 1. Push repo ini ke GitHub (kalau pakai GitHub Desktop: `File → Add local repository`, pilih
    folder project ini, lalu `Publish repository` ke akun GitHub kamu dengan nama `mutabaah`)
@@ -65,15 +67,42 @@ Paling gampang pakai **Vercel**:
    - `VITE_SUPABASE_ANON_KEY` = anon public key project Supabase kamu
 5. Klik **Deploy**
 
-Setelah deploy selesai, buka link Vercel-nya lewat HP (Chrome/Safari), lalu:
+Alternatif serupa: **Netlify** (drag-drop folder `dist/`, atau hubungkan ke repo GitHub dengan
+cara yang sama seperti Vercel).
+
+### Opsi B — GitHub Pages (semua tetap di GitHub, tanpa akun tambahan)
+
+Project ini sudah disiapkan untuk ini — ada workflow otomatis di
+[`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml) yang build & deploy setiap kali
+kamu push ke branch `main`/`master`. Bedanya dengan Vercel: GitHub Pages tidak punya UI untuk
+environment variable, jadi kredensial Supabase disimpan sebagai **repository secret** dan dipakai
+saat proses build oleh GitHub Actions (gratis untuk repo publik/privat pribadi).
+
+1. Push repo ini ke GitHub lewat GitHub Desktop (nama repo **harus** `mutabaah`, atau kalau beda,
+   sesuaikan nilai `BASE_PATH` di `.github/workflows/deploy.yml` dan `vite.config.js`)
+2. Di GitHub, buka repo → **Settings → Secrets and variables → Actions → New repository secret**,
+   tambahkan 2 secret:
+   - `VITE_SUPABASE_URL` = URL project Supabase kamu
+   - `VITE_SUPABASE_ANON_KEY` = anon public key project Supabase kamu
+3. Masih di **Settings**, buka menu **Pages**, di bagian **Build and deployment → Source**, pilih
+   **GitHub Actions**
+4. Buka tab **Actions** di repo, workflow "Deploy ke GitHub Pages" akan otomatis jalan (atau klik
+   **Run workflow** kalau belum jalan sendiri). Tunggu sampai selesai (centang hijau)
+5. Linknya muncul di **Settings → Pages**, formatnya `https://<username-github-kamu>.github.io/mutabaah/`
+
+Setiap kali kamu push perubahan baru ke GitHub lewat GitHub Desktop, situsnya otomatis ter-update
+dalam 1-2 menit — tidak perlu build/deploy manual lagi.
+
+> Catatan: karena GitHub Pages menempatkan project di subfolder (`/mutabaah/`, bukan di domain
+> utama), `vite.config.js` di project ini sudah diatur untuk otomatis menyesuaikan base path saat
+> build lewat env var `BASE_PATH` — tidak perlu diutak-atik kecuali kamu ganti nama repo.
+
+Setelah link-nya aktif (dari opsi manapun), buka lewat HP (Chrome/Safari), lalu:
 
 - **Android (Chrome)**: menu titik tiga → "Tambahkan ke layar Utama" / "Install app"
 - **iPhone (Safari)**: tombol Share → "Tambah ke Layar Utama"
 
 Aplikasi akan muncul seperti app biasa dengan ikon sendiri, tanpa address bar browser.
-
-Alternatif deploy lain yang juga gratis & serupa langkahnya: **Netlify** (drag-drop folder
-`dist/`, atau hubungkan ke repo GitHub dengan cara yang sama seperti Vercel).
 
 ## Struktur project
 
@@ -95,6 +124,8 @@ src/
     TargetsPage.jsx     -> kelola target: tambah baru, ubah besaran, hapus
 supabase/
   schema.sql           -> script SQL setup tabel & keamanan (RLS) di Supabase
+.github/workflows/
+  deploy.yml           -> otomatis build & deploy ke GitHub Pages tiap kali push (opsional, lihat Opsi B di atas)
 ```
 
 ## Cara kerja "tanpa login"
